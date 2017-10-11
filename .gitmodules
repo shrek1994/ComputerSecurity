@@ -1,0 +1,6 @@
+[submodule "lib/googleTest"]
+	path = lib/googleTest
+	url = git@github.com:google/googletest.git
+[submodule "lib/cryptopp"]
+	path = lib/cryptopp
+	url = https://github.com/weidai11/cryptopp
