@@ -8,7 +8,6 @@
 
 #include <cryptopp/aes.h>
 #include <cryptopp/osrng.h>
-#include <cryptopp/modes.h>
 #include <cryptopp/hex.h>
 #include <cryptopp/files.h>
 #include <cryptopp/base64.h>
@@ -63,9 +62,10 @@ std::stringstream CryptionAesCbc::decrypt(std::istream &in)
 
     try
     {
-        CBC_Mode<AES>::Decryption decryption;
         decryption.SetKeyWithIV( key, key.size(), iv );
 
+
+        //TODO zmienic na nie tworzenie obiektow;
         FileSource fs (in,
                        true,
                        new CryptoPP::Base64Decoder( new StreamTransformationFilter(decryption,

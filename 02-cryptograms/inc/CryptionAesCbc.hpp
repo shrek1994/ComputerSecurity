@@ -1,6 +1,8 @@
 #pragma once
 
 #include <cryptopp/secblock.h>
+#include <cryptopp/aes.h>
+#include <cryptopp/modes.h>
 
 class CryptionAesCbc
 {
@@ -16,4 +18,5 @@ public:
 private:
     CryptoPP::SecByteBlock key;
     CryptoPP::SecByteBlock iv;
+    CryptoPP::CBC_Mode<CryptoPP::AES>::Decryption decryption;
 };
