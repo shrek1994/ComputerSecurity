@@ -13,10 +13,9 @@ public:
     {}
 
     std::stringstream encrypt(std::istream& in);
-    std::stringstream decrypt(std::istream& in);
+    std::string decrypt(const std::string &in);
 
 private:
     CryptoPP::SecByteBlock key;
     CryptoPP::SecByteBlock iv;
-    CryptoPP::CBC_Mode<CryptoPP::AES>::Decryption decryption;
 };

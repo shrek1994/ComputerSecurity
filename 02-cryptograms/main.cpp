@@ -21,9 +21,7 @@ int main(int numOfArg, char *args[])
 #include "CryptionAesCbc.hpp"
 #include "debug.h"
 
-constexpr int numberOfThreads = 64;
-
-//std::array<char, 16> hex = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+constexpr int numberOfThreads = 4;
 
 auto ivByte = HexConverter().convertHex("0ac1174f6a70db02674139d89812163f");
 CryptoPP::SecByteBlock iv =  {ivByte.data(), ivByte.size()};
@@ -40,9 +38,9 @@ auto decrypt(const std::vector<CryptoPP::byte>& keyByte = ::keyByte)
 {
     CryptoPP::SecByteBlock key = {keyByte.data(), keyByte.size()};
     CryptionAesCbc aesCbc = {key, iv};
-    std::stringstream in(cipher);
+//    std::stringstream in(cipher);
 
-    return std::move(aesCbc.decrypt(in));
+    return std::move(aesCbc.decrypt(cipher));
 }
 
 
@@ -72,7 +70,7 @@ void findText(std::vector<CryptoPP::byte> keyByte, int begin, int end)
                 {
                     ++l;
                     keyByte[3] = l;
-                    std::cout << decrypt(keyByte).str();
+                    std::cout << decrypt(keyByte);
                 } while (l < UCHAR_MAX);
             } while (k < UCHAR_MAX);
         } while (j < UCHAR_MAX);
@@ -126,18 +124,18 @@ int main(int, char*[])
             keyByte[1] = j;
 
 
-//            CryptoPP::byte k = 0;
-//            do
-//            {
-//                keyByte[2] = k;
-                std::cout << decrypt().str();
-//                ++k;
-//            } while (k < 255);
+            CryptoPP::byte k = 0;
+            do
+            {
+                keyByte[2] = k;
+                std::cout << decrypt();
+                ++k;
+            } while (k < UCHAR_MAX);
 
             ++j;
-        } while (j < 255);
+        } while (j < UCHAR_MAX);
         ++i;
-    } while (i < 255);
+    } while (i < UCHAR_MAX);
 
     auto endTime = std::chrono::system_clock::now();
     std::chrono::duration<double> elapsed_seconds = endTime - startTime;

@@ -1,7 +1,7 @@
 QT += core
 QT -= gui
 
-CONFIG += c++14
+CONFIG += c++14 optimize_full
 
 TARGET = 02-cryptograms
 CONFIG += console

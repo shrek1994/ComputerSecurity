@@ -54,34 +54,32 @@ std::stringstream CryptionAesCbc::encrypt(std::istream& in)
     return std::move(out);
 }
 
-std::stringstream CryptionAesCbc::decrypt(std::istream &in)
+std::string CryptionAesCbc::decrypt(const std::string& in)
 {
     using namespace CryptoPP;
-    std::stringstream out;
-    std::string recoveredFile;
+    std::string recoveredFile = "";
+    char expected[] = "xxx ma kota. Kot ma, ale... to jednak ona go posiada. Jednakże gdy przeczytamy to ponownie to...\n";
+
 
     try
     {
+        CryptoPP::CBC_Mode<CryptoPP::AES>::Decryption decryption;
         decryption.SetKeyWithIV( key, key.size(), iv );
 
+        auto stringSink = new StringSink(recoveredFile); //std::make_unique<CryptoPP::StringSink>(recoveredFile);
+        auto streamFilter = new StreamTransformationFilter(decryption, stringSink); // std::make_unique<CryptoPP::StreamTransformationFilter>(decryption, stringSink.get());
+        auto base64Decoder = new CryptoPP::Base64Decoder(streamFilter);//std::make_unique<CryptoPP::Base64Decoder>(streamFilter.get());
 
-        //TODO zmienic na nie tworzenie obiektow;
-        FileSource fs (in,
-                       true,
-                       new CryptoPP::Base64Decoder( new StreamTransformationFilter(decryption,
-                                                                                   new StringSink(recoveredFile))));
-//                       new StreamTransformationFilter(decryption,
-//                                                      new StringSink(recoveredFile)));
-
+        StringSource ss (in, true, base64Decoder);
 
         LOG << "recovered text: " << recoveredFile << std::endl;
         if (isAscii(recoveredFile))
-            out << recoveredFile;
+            return std::move(recoveredFile);
     }
-    catch( const CryptoPP::Exception& e )
+    catch(const CryptoPP::Exception& e)
     {
 //        std::cerr << e.what() << std::endl;
     }
 
-    return std::move(out);
+    return "";
 }

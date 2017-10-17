@@ -45,8 +45,8 @@ TEST_F(CryptionCBCTest, DISABLED_decryptFile)
     std::stringstream in;
     in << encryptedText;
 
-    auto out = sut.decrypt(in);
-    EXPECT_BYTEEQ(text, out.str().c_str());
+    auto out = sut.decrypt(in.str());
+    EXPECT_BYTEEQ(text, out.c_str());
 }
 
 TEST_F(CryptionCBCTest, DISABLED_encryptAndDecryptFile)
@@ -54,9 +54,9 @@ TEST_F(CryptionCBCTest, DISABLED_encryptAndDecryptFile)
     std::stringstream in(text);
 
     auto outEncrypted = sut.encrypt(in);
-    auto out = sut.decrypt(outEncrypted);
+    auto out = sut.decrypt(outEncrypted.str());
 
-    EXPECT_BYTEEQ(text, out.str().c_str());
+    EXPECT_BYTEEQ(text, out.c_str());
 }
 
 
@@ -72,9 +72,9 @@ TEST_F(CryptionCBCTest, shouldDecryptCorrectlyAsInExample)
     CryptoPP::SecByteBlock key = {keyByte.data(), keyByte.size()};
     CryptoPP::SecByteBlock iv =  {ivByte.data(), ivByte.size()};
     CryptionAesCbc sut = {key, iv};
-    auto out = sut.decrypt(in);
+    auto out = sut.decrypt(in.str());
 
-    EXPECT_BYTEEQ(expected, out.str().c_str());
+    EXPECT_BYTEEQ(expected, out.c_str());
 }
 
 }  // namespace
