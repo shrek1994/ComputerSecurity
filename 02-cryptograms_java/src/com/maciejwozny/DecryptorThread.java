@@ -54,13 +54,13 @@ public class DecryptorThread extends Thread
     @Override
     public void run()
     {
-        runSevenChars(Main.initVector1, Main.suffixKey1, Main.encrypted1);
+//        runSevenChars(Main.initVector1, Main.suffixKey1, Main.encrypted1);
 
-//        final String[] hex = { "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"};
-//        for (String letter : hex) {
-//            System.out.println("ID = " + ID + ", letter = " + letter);
-//            runSevenChars(Main.initVector2, letter + Main.suffixKey2, Main.encrypted2);
-//        }
+        final String[] hex = { "9", "a", "b", "c", "d", "e", "f" , "8"};
+        for (String letter : hex) {
+            System.out.println("ID = " + ID + ", letter = " + letter);
+            runSevenChars(Main.initVector2, letter + Main.suffixKey2, Main.encrypted2);
+        }
 
     }
 

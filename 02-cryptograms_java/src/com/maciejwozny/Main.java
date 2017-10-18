@@ -17,9 +17,12 @@ public class Main {
     static final String zad1Key = "3a2da4920b76bf1952cf38b9f6f4e5da73b7ed6d9b3dfb18f5a1a0811713b747 ";
     static final String zad1Result = "Zamieszanie wokol wpisu Krystyny Jandy, w ktorym poskarzyla sie, ze nie rozpoznal jej sprzedawca w sklepie, uderzylo rykoszetem w dzialalnosc artystyczna tej wybitnej aktorki.";
 
+    static final String zad2key = "c94dc64acf380c5d89341cc33fbcb2fff4ba997d02807eed4103a5961679466a";
+    static final String zad2result = "Czerczesow mial w pewnym momencie powiedziec jednemu z pilkarzy, ze fatalnie dzis wyglada ? relacjonuje zawodnik, ktory przygladal sie zajsciu.";
+
 //    public static final String[] hex = { "f" , "e" , "d", "c", "b", "a", "9", "8", "7", "6", "5", "4", "3", "2", "1", "0"};
-//    public static final String[] hex = { "0" , "1" , "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"};
-    public static final String[] hex = { /*"0" , "1" ,*/ "2", "3", "4", /*"5", "6", "7", "8",*/ "9", "a", /*"b", "c", */"d" /*,  "e", "f" */};
+    public static final String[] hex = { "0" , "1" , "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"};
+//    public static final String[] hex = { /*"0" , "1" ,*/ "2", "3", "4", /*"5", "6", "7", "8",*/ "9", "a", /*"b", "c", */"d" /*,  "e", "f" */};
 
     static int id = 0;
 
