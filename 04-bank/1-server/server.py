@@ -30,8 +30,8 @@ def close_connection(exception):
 
 def setup_database(database):
     cursor = database.cursor()
-    cursor.execute('CREATE TABLE IF NOT EXIST users(user TEXT, password TEXT)')
-    cursor.execute('CREATE TABLE IF NOT EXIST payments(user TEXT, password TEXT)')
+    cursor.execute('CREATE TABLE IF NOT EXISTS users(user TEXT, password TEXT)')
+    cursor.execute('CREATE TABLE IF NOT EXISTS payments(user TEXT, password TEXT)')
     cursor.execute('INSERT INTO users(user, password) VALUES(?,?)', (USER, PASSWORD))
     database.commit()
 
@@ -101,10 +101,10 @@ def confirm_payment():
 @app.route("/")
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if 'username' in session:
-        return redirect(url_for('index'))
     if request.method == 'POST':
         return do_the_login()
+    elif 'username' in session:
+        return redirect(url_for('index'))
     else:
         return render_template('login.html')
 
