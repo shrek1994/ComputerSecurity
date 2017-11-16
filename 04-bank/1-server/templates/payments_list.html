@@ -11,11 +11,43 @@
     <img src="pkobp-logo.png" alt="Bank PKO">
 
     <h1>Witamy!</h1>
-    <p>Zaloguj się:</p>
+    <p>Lista przelewów:</p>
 
-    login: <input name="login" type="text">
-    <br>
-    hasło: <input name="password" type="password">
+<table style="width:100%">
+  <tr>
+    <th>Nr konta</th>
+    <th>Imię i nazwisko</th>
+    <th>Adres</th>
+    <th>Kwota</th>
+  </tr>
+    {% for payment in payments %}
+  <tr>
+    <td>
+    <center>{{ payment.account }}</center>
+    </td>
+    <td>
+        <center>
+            {{ payment.name }}
+        </center>
+    </td>
+    <td>
+        <center>
+            {{ payment.address }}
+        </center>
+    </td>
+    <td>
+        <center>
+            {{ payment.amount }}
+        </center>
+    </td>
+  </tr>
+    {% else %}
+
+    {% endfor %}
+</table>
+
+<br>
+    <a href="index">Wróć do strony głównej</a>
 
 </center>
 

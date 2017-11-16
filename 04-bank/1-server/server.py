@@ -31,8 +31,10 @@ def close_connection(exception):
 def setup_database(database):
     cursor = database.cursor()
     cursor.execute('CREATE TABLE IF NOT EXISTS users(user TEXT, password TEXT)')
-    cursor.execute('CREATE TABLE IF NOT EXISTS payments(user TEXT, password TEXT)')
+    cursor.execute('CREATE TABLE IF NOT EXISTS payments(user TEXT, account INT, name TEXT, address TEXT, amount INT)')
     cursor.execute('INSERT INTO users(user, password) VALUES(?,?)', (USER, PASSWORD))
+    cursor.execute('INSERT INTO payments(user, account, name, address, amount) VALUES(?,?,?,?,?)',
+                   (USER, 666, 'evil', 'hell', 123))
     database.commit()
 
 
@@ -46,9 +48,29 @@ def validate(user, password):
     return False
 
 
+def add_payment(user, account, name, address, amount):
+    database = get_db()
+    cursor = database.cursor()
+    print "add_payment: ", user, account, name, address, amount
+    cursor.execute('INSERT INTO payments(user, account, name, address, amount) VALUES(?,?,?,?,?)',
+                   (user, account, name, address, amount))
+    database.commit()
+
+
+def get_payments(user):
+    cursor = get_db().cursor()
+    cursor.execute('SELECT account, name, address, amount, user FROM payments')  # WHERE user=\'' + user + '\'')
+    payments = []
+    for row in cursor:
+        print row
+        payments.append({'account': row[0], 'name': row[1], 'address': row[2], 'amount': row[3]})
+    print "get_payments: ", payments
+    return payments
+
+
 def do_the_login():
     if validate(request.form['user'], request.form['password']):
-        session['username'] = "b" + request.form['user'] + "9"
+        session['username'] = request.form['user']
         return redirect(url_for('index'))
     return render_template('login.html', txt="Nieprawidlowy login lub haslo!")
 
@@ -85,6 +107,7 @@ def confirm_payment():
         name = request.form['name']
         address = request.form['address']
         amount = request.form['amount']
+        add_payment(session['username'], account, name, address, amount)
         return render_template('confirm_payment.html',
                                account=account, name=name, address=address,
                                amount=amount, confirmed=True)
@@ -98,6 +121,15 @@ def confirm_payment():
     return redirect(url_for('login'))
 
 
+@app.route('/payments_list')
+def payments_list():
+    if 'username' in session:
+        payments = get_payments(session['username'])
+        return render_template('payments_list.html', payments=payments)
+    else:
+        return render_template('login.html')
+
+
 @app.route("/")
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -107,6 +139,12 @@ def login():
         return redirect(url_for('index'))
     else:
         return render_template('login.html')
+
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return redirect(url_for('login'))
 
 
 if __name__ == "__main__":
