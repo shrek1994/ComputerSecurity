@@ -1,3 +1,6 @@
+import sys
+
+import errno
 from flask import Flask, session, redirect, url_for
 from flask import render_template
 from flask import request
@@ -8,6 +11,7 @@ import sqlite3
 app = Flask(__name__, static_folder='static')
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
+PORT=80
 DATABASE = ":memory:" #'database.sql'
 USER = 'b516bdde133b8628e160cb4b55698156ab76b2edbf3c84ed1825375772b94606'  #maciek
 PASSWORD = 'abe31fe1a2113e7e8bf174164515802806d388cf4f394cceace7341a182271ab'  #haslo
@@ -110,4 +114,9 @@ def login():
 
 
 if __name__ == "__main__":
-    app.run()
+    try:
+        app.run(port=PORT)
+    except IOError as err:
+        if err[0] == errno.EPERM or err[0] == errno.EACCES:
+            print >> sys.stderr, "You need root permissions to do this!"
+        sys.exit(1)
