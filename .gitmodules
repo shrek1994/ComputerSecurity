@@ -4,3 +4,6 @@
 [submodule "lib/cryptopp"]
 	path = lib/cryptopp
 	url = https://github.com/weidai11/cryptopp
+[submodule "07-blind-signatures/cppJNI"]
+	path = 07-blind-signatures/cppJNI
+	url = git@github.com:nokia/cppJNI.git
